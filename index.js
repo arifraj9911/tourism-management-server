@@ -39,12 +39,24 @@ async function run() {
       const result = await touristSpotCollection.find().toArray();
       res.send(result);
     });
+    app.get("/my-list", async (req, res) => {
+      const result = await touristSpotCollection.find().toArray();
+      res.send(result);
+    });
 
     app.get("/tourist-spots/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await touristSpotCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/my-list/:email", async (req, res) => {
+      const email = req.params.email;
+      // console.log(email);
+      const query = { email: email };
+      const result = await touristSpotCollection.find(query).toArray();
       res.send(result);
     });
 
