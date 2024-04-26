@@ -66,12 +66,37 @@ async function run() {
       res.send(result);
     });
 
-    app.delete('/my-list/:id',async(req,res)=>{
+    app.put("/my-list/:id", async (req, res) => {
       const id = req.params.id;
-      const query = {_id:new ObjectId(id)};
+      const filter = { _id: new ObjectId(id) };
+      const touristSpot = req.body;
+      const options = { upsert: true };
+      const updateTouristSpot = {
+        $set: {
+          spot_name: touristSpot.spot_name,
+          image: touristSpot.image,
+          country_name: touristSpot.country_name,
+          location: touristSpot.location,
+          avg_cost: touristSpot.avg_cost,
+          travel_time: touristSpot.travel_time,
+          visitor: touristSpot.visitor,
+          description: touristSpot.description,
+        },
+      };
+      const result = await touristSpotCollection.updateOne(
+        filter,
+        updateTouristSpot,
+        options
+      );
+      res.send(result);
+    });
+
+    app.delete("/my-list/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
       const result = await touristSpotCollection.deleteOne(query);
       res.send(result);
-    })
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
