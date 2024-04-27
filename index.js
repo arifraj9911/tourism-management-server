@@ -35,12 +35,26 @@ async function run() {
       .db("dbTouristSpot")
       .collection("touristSpot");
 
+    const countryCollection = client.db("dbCountry").collection("country");
+
     app.get("/tourist-spots", async (req, res) => {
       const result = await touristSpotCollection.find().toArray();
       res.send(result);
     });
     app.get("/my-list", async (req, res) => {
       const result = await touristSpotCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/country", async (req, res) => {
+      const result = await countryCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/country/:country_name", async (req, res) => {
+      const country_name = req.params.country_name;
+      const query = { country_name: country_name };
+      const result = await touristSpotCollection.find(query).toArray();
       res.send(result);
     });
 
